@@ -1,5 +1,7 @@
 package de.neuefische.springexceptionhandlingtask;
 
+import de.neuefische.springexceptionhandlingtask.exception.ErrorMessage;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.NoSuchElementException;
@@ -18,6 +20,13 @@ public class CarController {
 
     @GetMapping
     String getAllCars() {
-        throw new NoSuchElementException("No Cars found");
+        throw new IllegalArgumentException("No Cars found");
+    }
+
+
+    @ExceptionHandler (IllegalArgumentException.class)
+    @ResponseStatus (HttpStatus.NOT_FOUND)
+    public ErrorMessage handleProductNotFoundException(IllegalArgumentException e) {
+        return new ErrorMessage(e.getMessage());
     }
 }
